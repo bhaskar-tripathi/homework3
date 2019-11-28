@@ -4,9 +4,8 @@ function genPwd() {
     var lowerChars = "abcdefghijklmnopqrstuvwxyz";
     var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var pwdLen = null;
-    var pwdCharType1 = null;
-    var pwdCharUsageSwitch = [false, false, false, false];
-    var yesNoCheck = ["yes", "y", "no", "n"]
+    var pwdCharType = null;
+    var pwdCharTypesSel = [];
 
     while (1 == 1) {
         pwdLen = prompt("Please specify the length (must be between 8 and 128 characters)", "8");
@@ -25,74 +24,97 @@ function genPwd() {
         }
     }
 
-    while (1 == 1) {
-        pwdCharType1 = prompt("Do you want to use special characters");
-
-        if (pwdCharType1 != null) {
-            if (yesNoCheck.indexOf(pwdCharType1.toLowerCase()) < 0) prompt("Please enter valid input (Yes or No)");
-            else if (pwdCharType1.toLowerCase() === "yes" || pwdCharType1.toLowerCase() === "y") {
-                pwdCharUsageSwitch[0] = true;
-                break;
-            }
-        }
-        else {
-            break;
-        }
+    if (pwdLen != null) {
+        userPrompt("Do you want to use special characters", pwdCharTypesSel, "s");
+        userPrompt("Do you want to use Numeric characters", pwdCharTypesSel, "n");
+        userPrompt("Do you want to use lowercase characters", pwdCharTypesSel, "l");
+        userPrompt("Do you want to use uppercase characters", pwdCharTypesSel, "u");
     }
 
-    while (1 == 1) {
-        pwdCharType1 = prompt("Do you want to use Numeric characters");
+    if (pwdCharTypesSel.length !== 0){
 
-        if (pwdCharType1 != null) {
-            if (yesNoCheck.indexOf(pwdCharType1.toLowerCase()) < 0) prompt("Please enter valid input (Yes or No)");
-            else if (pwdCharType1.toLowerCase() === "yes" || pwdCharType1.toLowerCase() === "y") {
-                pwdCharUsageSwitch[1] = true;
-                break;
-            }
+    
+    var randNum = 0;
+    var password = null;
+    var charSet = null;
+    var charTypesToUse = pwdCharTypesSel.slice();  // charTypesToUse will be depleting list. pwdCharTypesSel will be used to randomly select char type
+
+    for (var i = pwdLen; i > 0; i--) {
+
+        // check if the remaining char types to use are less than the password chars left.
+        // If less chars left, use the remaining char types sequentially without using random number selection.
+        // Otherwise, use random number method
+        if (charTypesToUse.length >= i) {
+            if (charTypesToUse[0] == "s") charSet = specialChars;
+            else if (charTypesToUse[0] == "n") charSet = numChars;
+            else if (charTypesToUse[0] == "l") charSet = lowerChars;
+            else charSet = upperChars;
+            //console.log("Sequece : " + charTypesToUse[0]);
         }
         else {
-            break;
-        }
+            // generate random number to select which char type to use
+            randNum = Math.floor(Math.random() * (pwdCharTypesSel.length));
+
+            // get the selected char set
+            if (pwdCharTypesSel[randNum] == "s") charSet = specialChars;
+            else if (pwdCharTypesSel[randNum] == "n") charSet = numChars;
+            else if (pwdCharTypesSel[randNum] == "l") charSet = lowerChars;
+            else charSet = upperChars;
+
+            // remove the chat type from "charTypeToUse"
+            charTypesToUse.pop(pwdCharTypesSel[randNum]);
+
+            //console.log(randNum);
+            //console.log("Random : " + pwdCharTypesSel[randNum]);
+
+        };
+
+        randNum = 0; // Initialize the random number variable
+
+        // generate random number to select a particular char of selected char type
+        randNum = Math.floor(Math.random() * (charSet.length));
+
+        // get the select char and concatenate with the already selected chars for password
+        if (password == null) password = charSet[randNum];
+        else password = password + charSet[randNum];
+
     }
-
-    while (1 == 1) {
-        pwdCharType1 = prompt("Do you want to use lowercase characters");
-
-        if (pwdCharType1 != null) {
-            if (yesNoCheck.indexOf(pwdCharType1.toLowerCase()) < 0) prompt("Please enter valid input (Yes or No)");
-            else if (pwdCharType1.toLowerCase() === "yes" || pwdCharType1.toLowerCase() === "y") {
-                pwdCharUsageSwitch[2] = true;
-                break;
-            }
-        }
-        else {
-            break;
-        }
-    }
-
-    while (1 == 1) {
-        pwdCharType1 = prompt("Do you want to use uppercase characters");
-
-        if (pwdCharType1 != null) {
-            if (yesNoCheck.indexOf(pwdCharType1.toLowerCase()) < 0) prompt("Please enter valid input (Yes or No)");
-            else if (pwdCharType1.toLowerCase() === "yes" || pwdCharType1.toLowerCase() === "y") {
-                pwdCharUsageSwitch[3] = true;
-                break;
-            }
-        }
-        else {
-            break;
-        }
-    }
-
-
-
-    console.log(pwdLen);
-    console.log(pwdCharUsageSwitch);
-
 };
+    // Update the password in the text area
+    if (password != null || password !== "") {
+        document.querySelector("#password").textContent = password;
+    } 
+};
+
 
 function copyPwd() {
+    window.navigator.clipboard.writeText(document.querySelector("#password").textContent).then(function() {
+        console.log("clipboard write Successful")
+      }, function() {
+        console.log("clipboard write failed")
+      });
 
 };
 
+function userPrompt(promptText, selections, charType) {
+    while (1 == 1) {
+        var userInput = prompt(promptText);
+
+        if (userInput != null) {
+            if (userInput.toLowerCase() === "yes" || userInput.toLowerCase() === "y") {
+                //pwdCharTypesSel[0] = true;
+                selections.push(charType);
+                break;
+            }
+            else if (userInput.toLowerCase() === "no" || userInput.toLowerCase() === "n") {
+                break;
+            }
+            else {
+                prompt("Please enter valid input (Yes or No)")
+            };
+        }
+        else {
+            break;
+        }
+    }
+}
