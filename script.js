@@ -89,9 +89,9 @@ function genPwd() {
 
 function copyPwd() {
     window.navigator.clipboard.writeText(document.querySelector("#password").textContent).then(function() {
-        console.log("clipboard write Successful")
+        alert("Password copied to clipboard");
       }, function() {
-        console.log("clipboard write failed")
+        alert("Password copy failed due to permission security");
       });
 
 };
