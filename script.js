@@ -110,7 +110,7 @@ function userPrompt(promptText, selections, charType) {
                 break;
             }
             else {
-                prompt("Please enter valid input (Yes or No)")
+                alert("Please enter valid input (Yes or No)");
             };
         }
         else {
