@@ -11,6 +11,8 @@ When a user clicks on "Generate Password" button, s/he is presented with followi
     </ul>
 Any unexpected input is flagged with a message and user is prompted again to enter valid inputs only. 
 In addition, once a password is generated, user can copy it by clicking on "Copy to clipboard" button.</p>
+
+<img src="./assets/homeScreen.png" alt=""Home Screen Picture"</img>
   
 ## Pre-requisite
 <p>None, except that it uses external bootstrap CSS and javascript files. All other files have been placed in the root folder </p>
