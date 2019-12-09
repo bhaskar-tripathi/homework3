@@ -12,7 +12,7 @@ When a user clicks on "Generate Password" button, s/he is presented with followi
 Any unexpected input is flagged with a message and user is prompted again to enter valid inputs only. 
 In addition, once a password is generated, user can copy it by clicking on "Copy to clipboard" button.</p>
 
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
+![alt text](https://github.com/bhaskar-tripathi/homework3/blob/master/assets/homeScreen.png)
   
 ## Pre-requisite
 <p>None, except that it uses external bootstrap CSS and javascript files. All other files have been placed in the root folder </p>
